@@ -236,7 +236,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function toggleTheme() {
-        appTheme = appTheme === "dark" ? "light" : "dark";
+        appTheme = appTheme === "light" ? "dark" : "light";
         localStorage.setItem("productive_theme", appTheme);
         document.documentElement.setAttribute("data-theme", appTheme);
         updateThemeIcon();
