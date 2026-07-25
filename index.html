@@ -1,25 +1,30 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark" data-accent="blue-purple">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Productive Weeks of Your Life - Visualize Your Time</title>
-    
+
     <!-- Meta Tags for SEO -->
-    <meta name="description" content="Every week is a square. Every square is a chance. Visualize how many productive weeks you have left and make every moment count.">
-    <meta name="keywords" content="time visualization, productivity, life grid, age calculator, motivation, lifespan, planning">
+    <meta name="description"
+        content="Every week is a square. Every square is a chance. Visualize how many productive weeks you have left and make every moment count.">
+    <meta name="keywords"
+        content="time visualization, productivity, life grid, age calculator, motivation, lifespan, planning">
     <meta property="og:title" content="Productive Weeks of Your Life">
-    <meta property="og:description" content="Visualize your remaining productive years in a single page life grid. Ready to take action?">
+    <meta property="og:description"
+        content="Visualize your remaining productive years in a single page life grid. Ready to take action?">
     <meta property="og:type" content="website">
 
     <!-- Bootstrap 5 & Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-    
+
     <!-- Favicon & Stylesheet -->
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <!-- Canvas background elements for interactive visual ambiance -->
@@ -37,29 +42,42 @@
     <!-- Navigation Header -->
     <nav class="navbar-custom">
         <div class="container d-flex justify-content-between align-items-center">
-            <a class="navbar-brand brand-title m-0 d-flex align-items-center" href="#" aria-label="Productive Weeks Brand Logo">
+            <a class="navbar-brand brand-title m-0 d-flex align-items-center" href="#"
+                aria-label="Productive Weeks Brand Logo">
                 <i class="bi bi-grid-3x3-gap-fill me-2"></i>
                 Productive Weeks
             </a>
-            
+
             <div class="d-flex align-items-center gap-3">
                 <!-- Theme Accent Dot Menu selector -->
                 <div class="d-none d-md-flex align-items-center gap-2 me-2">
                     <span class="text-muted small fw-semibold">Accent:</span>
-                    <div class="accent-dot active" style="background: linear-gradient(135deg, #6366f1, #a855f7);" data-accent-choice="blue-purple" title="Blue/Purple Gradient" role="button" aria-label="Select Blue-Purple accent color"></div>
-                    <div class="accent-dot" style="background: linear-gradient(135deg, #10b981, #06b6d4);" data-accent-choice="emerald" title="Emerald Green Gradient" role="button" aria-label="Select Emerald Green accent color"></div>
-                    <div class="accent-dot" style="background: linear-gradient(135deg, #f97316, #ec4899);" data-accent-choice="sunset" title="Sunset Orange Gradient" role="button" aria-label="Select Sunset Orange accent color"></div>
-                    <div class="accent-dot" style="background: linear-gradient(135deg, #ef4444, #f43f5e);" data-accent-choice="cherry" title="Cherry Red Gradient" role="button" aria-label="Select Cherry Red accent color"></div>
-                    <div class="accent-dot" style="background: linear-gradient(135deg, #00f2fe, #4facfe);" data-accent-choice="cyber" title="Cyber Cyan Gradient" role="button" aria-label="Select Cyber Cyan accent color"></div>
+                    <div class="accent-dot active" style="background: linear-gradient(135deg, #6366f1, #a855f7);"
+                        data-accent-choice="blue-purple" title="Blue/Purple Gradient" role="button"
+                        aria-label="Select Blue-Purple accent color"></div>
+                    <div class="accent-dot" style="background: linear-gradient(135deg, #10b981, #06b6d4);"
+                        data-accent-choice="emerald" title="Emerald Green Gradient" role="button"
+                        aria-label="Select Emerald Green accent color"></div>
+                    <div class="accent-dot" style="background: linear-gradient(135deg, #f97316, #ec4899);"
+                        data-accent-choice="sunset" title="Sunset Orange Gradient" role="button"
+                        aria-label="Select Sunset Orange accent color"></div>
+                    <div class="accent-dot" style="background: linear-gradient(135deg, #ef4444, #f43f5e);"
+                        data-accent-choice="cherry" title="Cherry Red Gradient" role="button"
+                        aria-label="Select Cherry Red accent color"></div>
+                    <div class="accent-dot" style="background: linear-gradient(135deg, #00f2fe, #4facfe);"
+                        data-accent-choice="cyber" title="Cyber Cyan Gradient" role="button"
+                        aria-label="Select Cyber Cyan accent color"></div>
                 </div>
 
                 <!-- Theme Toggle Button -->
-                <button class="btn btn-outline-custom p-2 d-flex align-items-center justify-content-center" id="theme-toggle" title="Toggle Light/Dark Theme (T Key)" aria-label="Toggle display theme">
+                <button class="btn btn-outline-custom p-2 d-flex align-items-center justify-content-center"
+                    id="theme-toggle" title="Toggle Light/Dark Theme (T Key)" aria-label="Toggle display theme">
                     <i class="bi bi-moon-stars-fill" id="theme-icon"></i>
                 </button>
 
                 <!-- Help Button -->
-                <button class="btn btn-outline-custom p-2 d-flex align-items-center justify-content-center" id="help-toggle" title="Keyboard Shortcuts (? Key)" aria-label="View shortcuts guide">
+                <button class="btn btn-outline-custom p-2 d-flex align-items-center justify-content-center"
+                    id="help-toggle" title="Keyboard Shortcuts (? Key)" aria-label="View shortcuts guide">
                     <i class="bi bi-question-circle"></i>
                 </button>
             </div>
@@ -68,13 +86,13 @@
 
     <!-- Main Content Container -->
     <main class="container py-5 flex-grow-1">
-        
+
         <!-- Hero Section -->
         <section class="row text-center justify-content-center scroll-reveal revealed mb-4">
             <div class="col-lg-8">
                 <h1 class="display-3 fw-extrabold mb-3">Your Productive Life in Weeks</h1>
                 <p class="lead text-muted px-md-5">
-                    Every tiny square below represents one week of your productive life. 
+                    Every tiny square below represents one week of your productive life.
                     Once a week is gone, it never comes back.
                 </p>
                 <div class="d-flex justify-content-center gap-3 flex-wrap mt-3 text-muted small">
@@ -91,8 +109,10 @@
                     <h3 class="mb-4 display-font">Enter Your Date of Birth</h3>
                     <form id="dob-form" class="needs-validation" novalidate>
                         <div class="mb-4">
-                            <label for="dob-input" class="form-label text-muted small fw-semibold uppercase mb-2">Select Date</label>
-                            <input type="date" class="form-control custom-input text-center" id="dob-input" required aria-label="Date of Birth Picker">
+                            <label for="dob-input" class="form-label text-muted small fw-semibold uppercase mb-2">Select
+                                Date</label>
+                            <input type="date" class="form-control custom-input text-center" id="dob-input" required
+                                aria-label="Date of Birth Picker">
                             <div class="invalid-feedback">Please select a valid date of birth in the past.</div>
                         </div>
                         <button type="submit" class="btn btn-premium w-100" id="calculate-btn">
@@ -153,20 +173,25 @@
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
                         <div>
                             <h3 class="display-font m-0">The 40-Year Productive Grid</h3>
-                            <p class="text-muted small m-0 mt-1">Hover over any block to see the specific week and corresponding year of your life.</p>
+                            <p class="text-muted small m-0 mt-1">Hover over any block to see the specific week and
+                                corresponding year of your life.</p>
                         </div>
                         <!-- Legend -->
-                        <div class="d-flex align-items-center gap-3 fs-7 border border-secondary border-opacity-25 rounded-pill px-3 py-1.5 bg-black bg-opacity-20">
+                        <div
+                            class="d-flex align-items-center gap-3 fs-7 border border-secondary border-opacity-25 rounded-pill px-3 py-1.5 bg-black bg-opacity-20">
                             <div class="d-flex align-items-center gap-1.5">
-                                <div class="grid-square completed w-3 h-3 m-0" style="width:12px; height:12px; cursor:default;"></div>
+                                <div class="grid-square completed w-3 h-3 m-0"
+                                    style="width:12px; height:12px; cursor:default;"></div>
                                 <span class="text-muted small">Lived</span>
                             </div>
                             <div class="d-flex align-items-center gap-1.5">
-                                <div class="grid-square current w-3 h-3 m-0" style="width:12px; height:12px; cursor:default;"></div>
+                                <div class="grid-square current w-3 h-3 m-0"
+                                    style="width:12px; height:12px; cursor:default;"></div>
                                 <span class="text-muted small">Current Week</span>
                             </div>
                             <div class="d-flex align-items-center gap-1.5">
-                                <div class="grid-square future w-3 h-3 m-0" style="width:12px; height:12px; cursor:default;"></div>
+                                <div class="grid-square future w-3 h-3 m-0"
+                                    style="width:12px; height:12px; cursor:default;"></div>
                                 <span class="text-muted small">Remaining</span>
                             </div>
                         </div>
@@ -178,7 +203,7 @@
                         <div class="grid-labels-years py-1" id="grid-year-labels">
                             <!-- Populated dynamically via JS -->
                         </div>
-                        
+
                         <!-- Grid columns -->
                         <div class="flex-grow-1">
                             <div class="grid-container">
@@ -197,10 +222,10 @@
             <div class="col-lg-10">
                 <div class="glass-card">
                     <h4 class="display-font mb-4">Your Lifespan Milestones</h4>
-                    
+
                     <div class="timeline-container my-4 px-4">
                         <div class="timeline-line"></div>
-                        
+
                         <div class="timeline-node active" style="left: 0%;">
                             <div class="timeline-dot" data-bs-toggle="tooltip" title="Your birth day"></div>
                             <div class="timeline-label">Born</div>
@@ -212,7 +237,8 @@
                         </div>
 
                         <div class="timeline-node" id="timeline-node-prod" style="left: 53.3%;">
-                            <div class="timeline-dot" data-bs-toggle="tooltip" title="Limit of high-productivity years"></div>
+                            <div class="timeline-dot" data-bs-toggle="tooltip" title="Limit of high-productivity years">
+                            </div>
                             <div class="timeline-label">Age 40 (Prod. End)</div>
                         </div>
 
@@ -232,20 +258,23 @@
                     <!-- Productivity Loss Facts -->
                     <div class="col-md-6">
                         <div class="glass-card h-100">
-                            <h4 class="display-font mb-4"><i class="bi bi-clock-history me-2 text-danger"></i>The Cost of Wasting Time</h4>
+                            <h4 class="display-font mb-4"><i class="bi bi-clock-history me-2 text-danger"></i>The Cost
+                                of Wasting Time</h4>
                             <div id="facts-list">
                                 <!-- Populated dynamically by JS -->
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Dynamic Context Fact -->
                     <div class="col-md-6">
                         <div class="glass-card h-100 d-flex flex-column justify-content-between">
                             <div>
-                                <h4 class="display-font mb-3"><i class="bi bi-compass me-2 text-info"></i>Perspective & Reality</h4>
+                                <h4 class="display-font mb-3"><i class="bi bi-compass me-2 text-info"></i>Perspective &
+                                    Reality</h4>
                                 <p class="text-muted leading-relaxed" id="dynamic-context-fact">
-                                    Please enter your DOB to generate contextual facts based on your remaining productive weeks.
+                                    Please enter your DOB to generate contextual facts based on your remaining
+                                    productive weeks.
                                 </p>
                             </div>
                             <!-- Action button to download visual report or print -->
@@ -267,7 +296,6 @@
         <section class="row justify-content-center scroll-reveal mb-5">
             <div class="col-lg-10">
                 <div class="glass-card motivation-card text-center py-5">
-                    <i class="bi bi-quote display-1 text-secondary opacity-10 position-absolute top-0 start-50 translate-middle-x mt-3" style="font-size: 8rem; pointer-events: none;"></i>
                     <p class="quote-text px-4" id="quote-text">
                         "Your time is limited, so don't waste it living someone else's life."
                     </p>
@@ -284,24 +312,31 @@
             <div class="col-lg-10">
                 <div class="glass-card">
                     <h3 class="display-font mb-4 text-center">About This Visualization</h3>
-                    
+
                     <div class="row g-4 mt-2">
                         <div class="col-md-4">
-                            <h5 class="display-font text-primary"><i class="bi bi-bounding-box-circles me-2"></i>Why weeks?</h5>
+                            <h5 class="display-font text-primary"><i class="bi bi-bounding-box-circles me-2"></i>Why
+                                weeks?</h5>
                             <p class="text-muted small">
-                                Thinking in years makes life feel infinitely long. Breaking it down into weeks shifts your perspective. A week is small enough to plan, yet large enough to accomplish a meaningful milestone.
+                                Thinking in years makes life feel infinitely long. Breaking it down into weeks shifts
+                                your perspective. A week is small enough to plan, yet large enough to accomplish a
+                                meaningful milestone.
                             </p>
                         </div>
                         <div class="col-md-4">
-                            <h5 class="display-font text-primary"><i class="bi bi-shield-check me-2"></i>Why 40 productive years?</h5>
+                            <h5 class="display-font text-primary"><i class="bi bi-shield-check me-2"></i>Why 40
+                                productive years?</h5>
                             <p class="text-muted small">
-                                The highly creative, energetic, and risk-taking years of career execution typically fall between ages 20 and 60. This 40-year window represents your peak capital-building phase.
+                                The highly creative, energetic, and risk-taking years of career execution typically fall
+                                between ages 20 and 60. This 40-year window represents your peak capital-building phase.
                             </p>
                         </div>
                         <div class="col-md-4">
-                            <h5 class="display-font text-primary"><i class="bi bi-graph-up-arrow me-2"></i>Compounding</h5>
+                            <h5 class="display-font text-primary"><i class="bi bi-graph-up-arrow me-2"></i>Compounding
+                            </h5>
                             <p class="text-muted small">
-                                Consistent weekly effort compounds dramatically. Improving just 1% each week creates a 67% increase in ability over a single year. Don't underestimate small, regular actions.
+                                Consistent weekly effort compounds dramatically. Improving just 1% each week creates a
+                                67% increase in ability over a single year. Don't underestimate small, regular actions.
                             </p>
                         </div>
                     </div>
@@ -312,7 +347,8 @@
     </main>
 
     <!-- Footer Section -->
-    <footer class="mt-auto py-4 border-top border-secondary border-opacity-10 text-center text-muted small bg-black bg-opacity-20">
+    <footer
+        class="mt-auto py-4 border-top border-secondary border-opacity-10 text-center text-muted small bg-black bg-opacity-20">
         <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
             <div>
                 <span>Made with <i class="bi bi-heart-fill text-danger mx-1"></i> &bull; Every Week Counts</span>
@@ -320,7 +356,8 @@
             <div class="d-flex gap-3">
                 <a href="#dob-form" class="text-muted text-decoration-none hover-accent">Recalculate</a>
                 <span>&middot;</span>
-                <a href="#" class="text-muted text-decoration-none hover-accent" data-bs-toggle="modal" data-bs-target="#shortcutsModal">Keyboard Shortcuts</a>
+                <a href="#" class="text-muted text-decoration-none hover-accent" data-bs-toggle="modal"
+                    data-bs-target="#shortcutsModal">Keyboard Shortcuts</a>
             </div>
         </div>
     </footer>
@@ -341,7 +378,8 @@
                     <h5 class="modal-title display-font d-flex align-items-center" id="shortcutsModalLabel">
                         <i class="bi bi-keyboard me-2"></i> Keyboard Shortcuts
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4">
                     <div class="d-flex flex-column gap-3">
@@ -377,8 +415,9 @@
 
     <!-- Bootstrap Bundle JS (includes Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <!-- Local Logic Script -->
     <script src="script.js"></script>
 </body>
+
 </html>
