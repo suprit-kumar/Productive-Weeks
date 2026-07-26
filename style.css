@@ -305,8 +305,10 @@ html {
 
 .grid-container {
     width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
 }
@@ -338,10 +340,11 @@ html {
 /* Actual CSS Grid Setup */
 .life-grid {
     display: grid;
-    grid-template-columns: repeat(52, minmax(16px, 1fr));
+    grid-template-columns: repeat(52, minmax(0, 1fr));
     gap: 4px;
     width: 100%;
-    min-width: 1040px;
+    max-width: 100%;
+    min-width: 0;
 }
 
 .grid-square {
@@ -431,6 +434,10 @@ html {
     font-weight: 600;
     padding-right: 8px;
     text-align: right;
+}
+
+.flex-grow-1 {
+    min-width: 0;
 }
 
 /* Progress Bar Components */
@@ -765,7 +772,9 @@ html {
 /* Responsive Rules for Small Devices */
 @media (max-width: 991.98px) {
     .life-grid {
-        grid-template-columns: repeat(20, 1fr);
+        grid-template-columns: repeat(20, minmax(0, 1fr));
+        max-width: 100%;
+        min-width: 0;
     }
     
     .glass-card {
@@ -788,6 +797,8 @@ html {
 
     .grid-container {
         padding: 1rem;
+        overflow-x: hidden;
+        overflow-y: auto;
     }
 }
 
@@ -803,6 +814,11 @@ html {
         overflow-y: auto;
         overflow-x: hidden;
         -webkit-overflow-scrolling: touch;
+    }
+
+    .grid-square:hover {
+        transform: none;
+        box-shadow: none;
     }
 
     .timeline-container {
@@ -821,14 +837,16 @@ html {
     }
 
     .life-grid {
-        grid-template-columns: repeat(52, minmax(12px, 1fr));
-        min-width: 900px;
+        grid-template-columns: repeat(16, minmax(0, 1fr));
         gap: 3px;
+        max-width: 100%;
+        min-width: 0;
     }
 
     .grid-container {
-        overflow-x: auto;
-        overflow-y: hidden;
+        max-height: 780px;
+        overflow-y: auto;
+        overflow-x: hidden;
         -webkit-overflow-scrolling: touch;
     }
 
