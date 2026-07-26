@@ -297,15 +297,39 @@ html {
     border-color: var(--text-primary);
 }
 
+.accent-selector {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.grid-container {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+}
+
+.grid-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.grid-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+}
+
+.grid-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
     .accent-dot,
     .theme-toggle-btn,
     .help-toggle-btn {
         min-width: 40px;
         min-height: 40px;
     }
-    background: rgba(0, 0, 0, 0.15);
-    border: 1px solid var(--border-color);
-}
 
 [data-theme="light"] .grid-container {
     background: rgba(0, 0, 0, 0.02);
@@ -314,9 +338,10 @@ html {
 /* Actual CSS Grid Setup */
 .life-grid {
     display: grid;
-    grid-template-columns: repeat(52, 1fr);
+    grid-template-columns: repeat(52, minmax(16px, 1fr));
     gap: 4px;
     width: 100%;
+    min-width: 1040px;
 }
 
 .grid-square {
@@ -757,11 +782,15 @@ html {
 
 @media (max-width: 768px) {
     .life-grid {
-        grid-template-columns: repeat(16, 1fr);
+        grid-template-columns: repeat(52, minmax(14px, 1fr));
+        min-width: 1040px;
     }
 
     .grid-container {
         max-height: 650px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
     }
 
     .timeline-container {
@@ -770,9 +799,25 @@ html {
 }
 
 @media (max-width: 575.98px) {
+    .accent-selector {
+        justify-content: center;
+    }
+
+    .accent-dot {
+        width: 20px;
+        height: 20px;
+    }
+
     .life-grid {
-        grid-template-columns: repeat(12, 1fr);
+        grid-template-columns: repeat(52, minmax(12px, 1fr));
+        min-width: 900px;
         gap: 3px;
+    }
+
+    .grid-container {
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
     }
 
     .glass-card {
