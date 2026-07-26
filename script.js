@@ -8,9 +8,20 @@ document.addEventListener("DOMContentLoaded", () => {
     // CONSTANTS & CONFIGURATION
     // ----------------------------------------------------
     const LIFE_EXPECTANCY = 75;
+    const PRODUCTIVE_START_AGE = 20;
     const PRODUCTIVE_AGE = 40;
     const WEEKS_PER_YEAR = 52.1775;
-    const TOTAL_PRODUCTIVE_WEEKS = Math.floor(PRODUCTIVE_AGE * WEEKS_PER_YEAR); // 2087 weeks
+    const TOTAL_PRODUCTIVE_WEEKS = Math.floor((PRODUCTIVE_AGE - PRODUCTIVE_START_AGE) * WEEKS_PER_YEAR); // 2087 weeks
+
+    // ----------------------------------------------------
+    // WEEK NOTES STORAGE
+    // ----------------------------------------------------
+    let weekNotes = {};
+    try {
+        weekNotes = JSON.parse(localStorage.getItem("productive_week_notes") || "{}");
+    } catch (error) {
+        weekNotes = {};
+    }
 
     // ----------------------------------------------------
     // MOTIVATIONAL QUOTES (100+ items)
@@ -122,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // INITIAL STATE / STORAGE
     // ----------------------------------------------------
     let userDob = localStorage.getItem("productive_dob") || "";
-    let appTheme = localStorage.getItem("productive_theme") || "dark";
+    const appTheme = "light";
     let appAccent = localStorage.getItem("productive_accent") || "blue-purple";
 
     // ----------------------------------------------------
@@ -130,11 +141,16 @@ document.addEventListener("DOMContentLoaded", () => {
     // ----------------------------------------------------
     const dobInput = document.getElementById("dob-input");
     const dobForm = document.getElementById("dob-form");
-    const themeToggleBtn = document.getElementById("theme-toggle");
-    const themeIcon = document.getElementById("theme-icon");
-    const helpToggleBtn = document.getElementById("help-toggle");
-    const shortcutsModalEl = document.getElementById("shortcutsModal");
-    const shortcutsModal = new bootstrap.Modal(shortcutsModalEl);
+    const weekNoteModalEl = document.getElementById("weekNoteModal");
+    const weekNoteModal = new bootstrap.Modal(weekNoteModalEl);
+    const noteModalTitle = document.getElementById("weekNoteModalLabel");
+    const noteModalSubtitle = document.getElementById("note-modal-subtitle");
+    const noteModalDate = document.getElementById("note-modal-date");
+    const noteContentInput = document.getElementById("note-content");
+    const noteSaveBtn = document.getElementById("note-save-btn");
+    const noteDeleteBtn = document.getElementById("note-delete-btn");
+    let activeNoteWeekNumber = null;
+    let activeNoteSquare = null;
 
     // Section containers to reveal/hide
     const statsSection = document.getElementById("stats-section");
@@ -150,6 +166,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const statProgress = document.getElementById("stat-progress");
     const progressFill = document.getElementById("progress-fill");
     const progressPercentLabel = document.getElementById("progress-percentage-label");
+    const calculationSection = document.getElementById("calculation-section");
+    const calculationDetails = document.getElementById("calculation-details");
 
     // Grid details
     const lifeGridElement = document.getElementById("life-grid-element");
@@ -163,7 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Facts list
     const factsList = document.getElementById("facts-list");
     const dynamicContextFact = document.getElementById("dynamic-context-fact");
-    const printReportBtn = document.getElementById("print-report-btn");
     const shareProgressBtn = document.getElementById("share-progress-btn");
 
     // Floating Button
@@ -196,7 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Apply visual theme from storage
         document.documentElement.setAttribute("data-theme", appTheme);
         document.documentElement.setAttribute("data-accent", appAccent);
-        updateThemeIcon();
+
         updateActiveAccentDot();
 
         // Canvas setups
@@ -223,23 +240,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ----------------------------------------------------
-    // ACCENT COLOR & THEME CONTROLS
+    // ACCENT COLOR CONTROLS
     // ----------------------------------------------------
     function updateThemeIcon() {
-        if (appTheme === "light") {
-            themeIcon.className = "bi bi-sun-fill";
-            themeToggleBtn.title = "Toggle Dark Theme (T Key)";
-        } else {
-            themeIcon.className = "bi bi-moon-stars-fill";
-            themeToggleBtn.title = "Toggle Light Theme (T Key)";
-        }
+        // No theme toggle button in the current layout.
     }
 
     function toggleTheme() {
-        appTheme = appTheme === "light" ? "dark" : "light";
-        localStorage.setItem("productive_theme", appTheme);
-        document.documentElement.setAttribute("data-theme", appTheme);
-        updateThemeIcon();
+        // Disabled: permanent light theme.
     }
 
     function updateActiveAccentDot() {
@@ -268,9 +276,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    themeToggleBtn.addEventListener("click", toggleTheme);
-    helpToggleBtn.addEventListener("click", () => shortcutsModal.show());
-
     // ----------------------------------------------------
     // CORE CALCULATIONS
     // ----------------------------------------------------
@@ -283,23 +288,23 @@ document.addEventListener("DOMContentLoaded", () => {
         const msPerYear = 1000 * 60 * 60 * 24 * 365.2425;
         const currentAge = Math.max(0, ageInMs / msPerYear);
 
-        // Grid calculations
-        const totalWeeksLived = currentAge * WEEKS_PER_YEAR;
-        const productiveWeeksCompleted = Math.min(TOTAL_PRODUCTIVE_WEEKS, totalWeeksLived);
+        // Grid calculations relative to productive span starting at age 20
+        const weeksSinceBirth = currentAge * WEEKS_PER_YEAR;
+        const productiveStartWeeks = PRODUCTIVE_START_AGE * WEEKS_PER_YEAR;
+        const productiveWeeksLived = weeksSinceBirth - productiveStartWeeks;
+        const productiveWeeksCompleted = Math.min(TOTAL_PRODUCTIVE_WEEKS, Math.max(0, productiveWeeksLived));
         const productiveWeeksRemaining = Math.max(0, TOTAL_PRODUCTIVE_WEEKS - productiveWeeksCompleted);
-        const percentageCompleted = (productiveWeeksCompleted / TOTAL_PRODUCTIVE_WEEKS) * 100;
-        const percentageRemaining = 100 - percentageCompleted;
-
-        // Find current week index relative to DOB
-        const currentWeekIndex = Math.floor(totalWeeksLived);
+        const percentageCompleted = TOTAL_PRODUCTIVE_WEEKS > 0 ? (productiveWeeksCompleted / TOTAL_PRODUCTIVE_WEEKS) * 100 : 0;
+        const currentWeekIndex = productiveWeeksLived >= 0 ? Math.floor(productiveWeeksLived) : -1;
 
         return {
             currentAge,
-            totalWeeksLived,
+            weeksSinceBirth,
+            productiveStartWeeks,
+            productiveWeeksLived,
             productiveWeeksCompleted: Math.floor(productiveWeeksCompleted),
             productiveWeeksRemaining: Math.ceil(productiveWeeksRemaining),
             percentageCompleted,
-            percentageRemaining,
             currentWeekIndex
         };
     }
@@ -316,10 +321,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Reveal hidden sections
         statsSection.classList.remove("d-none");
+        calculationSection.classList.remove("d-none");
         progressSection.classList.remove("d-none");
         gridSection.classList.remove("d-none");
         timelineSection.classList.remove("d-none");
         factsSection.classList.remove("d-none");
+
+        calculationDetails.innerHTML = `
+            <ul class="calculation-list">
+                <li><strong>Age calculation</strong>: (today - DOB) / 365.2425 = <strong>${results.currentAge.toFixed(2)} years</strong></li>
+                <li><strong>Weeks since birth</strong>: ${results.currentAge.toFixed(2)} × ${WEEKS_PER_YEAR} = <strong>${results.weeksSinceBirth.toFixed(1)} weeks</strong></li>
+                <li><strong>Productive window starts at age 20</strong>: ${PRODUCTIVE_START_AGE} × ${WEEKS_PER_YEAR} = <strong>${results.productiveStartWeeks.toFixed(1)} weeks</strong></li>
+                <li><strong>Productive weeks lived</strong>: ${results.weeksSinceBirth.toFixed(1)} - ${results.productiveStartWeeks.toFixed(1)} = <strong>${results.productiveWeeksLived.toFixed(1)} weeks</strong></li>
+                <li><strong>Weeks completed</strong>: clamp to 0–${TOTAL_PRODUCTIVE_WEEKS} → <strong>${results.productiveWeeksCompleted.toLocaleString()}</strong></li>
+                <li><strong>Weeks remaining</strong>: ${TOTAL_PRODUCTIVE_WEEKS} - ${results.productiveWeeksCompleted.toLocaleString()} = <strong>${results.productiveWeeksRemaining.toLocaleString()}</strong></li>
+                <li><strong>Completion percentage</strong>: ${results.productiveWeeksCompleted.toLocaleString()} / ${TOTAL_PRODUCTIVE_WEEKS} × 100 = <strong>${results.percentageCompleted.toFixed(1)}%</strong></li>
+            </ul>
+        `;
 
         // Force triggers scroll reveals
         triggerScrollReveal();
@@ -402,14 +420,14 @@ document.addEventListener("DOMContentLoaded", () => {
         lifeGridElement.innerHTML = "";
         gridYearLabels.innerHTML = "";
 
-        // Build Year Labels on the left
-        for (let year = 0; year <= PRODUCTIVE_AGE; year += 5) {
+        // Build Year Labels on the left for the productive window
+        for (let year = PRODUCTIVE_START_AGE; year <= PRODUCTIVE_AGE; year += 5) {
             const label = document.createElement("span");
             label.innerText = `Yr ${year}`;
             gridYearLabels.appendChild(label);
         }
 
-        // Generate grid squares
+        // Generate grid squares inside productive years 20-40
         const totalSquares = TOTAL_PRODUCTIVE_WEEKS; // 2087
         const fragments = document.createDocumentFragment();
 
@@ -419,24 +437,34 @@ document.addEventListener("DOMContentLoaded", () => {
             const square = document.createElement("div");
             square.className = "grid-square";
 
-            const yearOfLife = Math.floor(i / WEEKS_PER_YEAR);
+            const productiveWeekNumber = i + 1;
+            const ageAtWeek = PRODUCTIVE_START_AGE + Math.floor(i / WEEKS_PER_YEAR);
             const weekOfYear = Math.floor(i % WEEKS_PER_YEAR) + 1;
 
-            square.setAttribute("data-tooltip", `Week ${i + 1} (Age ${yearOfLife}, Wk ${weekOfYear})`);
+            const note = weekNotes[productiveWeekNumber] || "";
+            const noteLabel = note ? `\nNote: ${note}` : "";
+            square.setAttribute("data-tooltip", `Week ${productiveWeekNumber} (Age ${ageAtWeek}, Wk ${weekOfYear})${noteLabel}`);
+            square.setAttribute("aria-label", `Week ${productiveWeekNumber} note${note ? ": " + note : " available"}`);
+            square.dataset.weekNumber = productiveWeekNumber;
+            square.dataset.note = note;
+
+            if (note) {
+                square.classList.add("has-note");
+            }
 
             if (isGridGrayedOut) {
-                // If user is older than 40, entire grid turns gray
                 square.classList.add("gray-out");
             } else {
                 if (i < weeksCompleted) {
                     square.classList.add("completed");
-                } else if (i === currentWeekIndex) {
+                } else if (currentWeekIndex >= 0 && i === currentWeekIndex) {
                     square.classList.add("current");
                 } else {
                     square.classList.add("future");
                 }
             }
 
+            square.addEventListener("click", handleWeekClick);
             fragments.appendChild(square);
         }
 
@@ -476,7 +504,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const facts = [
             { label: "Wasting 1 Week", value: `${(1 / TOTAL_PRODUCTIVE_WEEKS * 100).toFixed(3)}% loss of productive span` },
             { label: "Wasting 1 Year", value: `${(52.1775 / TOTAL_PRODUCTIVE_WEEKS * 100).toFixed(2)}% loss of productive span` },
-            { label: "Highly Productive Span", value: `${PRODUCTIVE_AGE} Years (~${TOTAL_PRODUCTIVE_WEEKS} Weeks)` }
+            { label: "Highly Productive Span", value: `${PRODUCTIVE_AGE - PRODUCTIVE_START_AGE} Years (~${TOTAL_PRODUCTIVE_WEEKS} Weeks)` }
         ];
 
         facts.forEach(fact => {
@@ -493,7 +521,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let contextMsg = "";
         if (age >= PRODUCTIVE_AGE) {
             contextMsg = `
-                You are currently <strong>${age.toFixed(1)} years old</strong>. Your peak 40-year productive window has concluded. 
+                You are currently <strong>${age.toFixed(1)} years old</strong>. Your peak 20-year productive window has concluded. 
                 However, time compounds in every decade. Every week now is a bonus chance to share your wisdom, guide others, 
                 and build your legacy without limits. Focus on compounding quality and depth.
             `;
@@ -510,10 +538,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // ----------------------------------------------------
     // SHARING & PRINT DIALOGS
     // ----------------------------------------------------
-    printReportBtn.addEventListener("click", () => {
-        window.print();
-    });
-
+    
     shareProgressBtn.addEventListener("click", () => {
         const title = "My Productive Weeks Grid";
         const text = `I'm visualizing my productive weeks left on Earth. Time is a non-renewable resource! Check yours out.`;
@@ -555,6 +580,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     nextQuoteBtn.addEventListener("click", displayRandomQuote);
+    noteSaveBtn.addEventListener("click", saveWeekNote);
+    noteDeleteBtn.addEventListener("click", deleteWeekNote);
 
     // ----------------------------------------------------
     // BACKGROUND DRIFTING STAR CANVAS
@@ -620,9 +647,92 @@ document.addEventListener("DOMContentLoaded", () => {
         const today = new Date();
 
         if (dobDate.getMonth() === today.getMonth() && dobDate.getDate() === today.getDate()) {
-            // It is user's birthday today!
             triggerConfettiBurst(true);
         }
+    }
+
+    function getWeekDateRange(dobString, weekNumber) {
+        const baseDate = new Date(dobString);
+        const productiveStart = new Date(baseDate);
+        productiveStart.setFullYear(productiveStart.getFullYear() + PRODUCTIVE_START_AGE);
+
+        const weekStart = new Date(productiveStart);
+        weekStart.setDate(weekStart.getDate() + (Number(weekNumber) - 1) * 7);
+
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekEnd.getDate() + 6);
+
+        return { start: weekStart, end: weekEnd };
+    }
+
+    function formatDateForLabel(date) {
+        return date.toLocaleDateString(undefined, {
+            month: "short",
+            day: "numeric",
+            year: "numeric"
+        });
+    }
+
+    function handleWeekClick(event) {
+        const square = event.currentTarget;
+        const weekNumber = square.dataset.weekNumber;
+        const currentNote = weekNotes[weekNumber] || "";
+        const ageAtWeek = PRODUCTIVE_START_AGE + Math.floor((weekNumber - 1) / WEEKS_PER_YEAR);
+        const weekOfYear = Math.floor((weekNumber - 1) % WEEKS_PER_YEAR) + 1;
+
+        activeNoteSquare = square;
+        activeNoteWeekNumber = weekNumber;
+        noteModalTitle.innerText = `Week ${weekNumber} Note`;
+        noteModalSubtitle.innerText = `Age ${ageAtWeek} • Week ${weekOfYear}`;
+
+        if (userDob) {
+            const range = getWeekDateRange(userDob, weekNumber);
+            noteModalDate.innerText = `${formatDateForLabel(range.start)} — ${formatDateForLabel(range.end)}`;
+        } else {
+            noteModalDate.innerText = "Select your date of birth to see the exact week range.";
+        }
+
+        noteContentInput.value = currentNote;
+        noteDeleteBtn.style.display = currentNote ? "inline-flex" : "none";
+        weekNoteModal.show();
+    }
+
+    function saveWeekNote() {
+        if (!activeNoteWeekNumber || !activeNoteSquare) return;
+
+        const noteText = noteContentInput.value.trim();
+        const tooltipText = activeNoteSquare.getAttribute("data-tooltip").split("\n")[0];
+
+        if (noteText === "") {
+            delete weekNotes[activeNoteWeekNumber];
+            activeNoteSquare.dataset.note = "";
+            activeNoteSquare.classList.remove("has-note");
+            activeNoteSquare.removeAttribute("data-note");
+        } else {
+            weekNotes[activeNoteWeekNumber] = noteText;
+            activeNoteSquare.dataset.note = noteText;
+            activeNoteSquare.classList.add("has-note");
+        }
+
+        localStorage.setItem("productive_week_notes", JSON.stringify(weekNotes));
+        const noteLabel = noteText ? `\nNote: ${noteText}` : "";
+        activeNoteSquare.setAttribute("data-tooltip", `${tooltipText}${noteLabel}`);
+        weekNoteModal.hide();
+    }
+
+    function deleteWeekNote() {
+        if (!activeNoteWeekNumber || !activeNoteSquare) return;
+
+        delete weekNotes[activeNoteWeekNumber];
+        activeNoteSquare.dataset.note = "";
+        activeNoteSquare.classList.remove("has-note");
+        activeNoteSquare.removeAttribute("data-note");
+
+        const tooltipText = activeNoteSquare.getAttribute("data-tooltip").split("\n")[0];
+        activeNoteSquare.setAttribute("data-tooltip", tooltipText);
+        localStorage.setItem("productive_week_notes", JSON.stringify(weekNotes));
+        noteContentInput.value = "";
+        noteDeleteBtn.style.display = "none";
     }
 
     function triggerConfettiBurst(isBirthday = false) {
@@ -734,39 +844,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     backToTopBtn.addEventListener("click", () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-
-    // ----------------------------------------------------
-    // KEYBOARD SHORTCUTS
-    // ----------------------------------------------------
-    window.addEventListener("keydown", (e) => {
-        // Skip shortcuts if user is currently typing in input field
-        if (document.activeElement.tagName === "INPUT") {
-            if (e.key === "Escape") {
-                dobInput.blur();
-            }
-            return;
-        }
-
-        const key = e.key.toLowerCase();
-        
-        if (key === "d") {
-            e.preventDefault();
-            dobInput.focus();
-            dobInput.select();
-        } else if (key === "t") {
-            e.preventDefault();
-            toggleTheme();
-        } else if (key === "q") {
-            e.preventDefault();
-            displayRandomQuote();
-        } else if (key === "p") {
-            e.preventDefault();
-            window.print();
-        } else if (e.key === "?") {
-            e.preventDefault();
-            shortcutsModal.show();
-        }
     });
 
     // ----------------------------------------------------

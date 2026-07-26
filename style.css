@@ -120,6 +120,12 @@ body {
     position: relative;
 }
 
+footer,
+footer .text-muted,
+footer a {
+    color: #ffffff !important;
+}
+
 h1, h2, h3, h4, h5, h6, .display-font {
     font-family: var(--font-heading);
     font-weight: 700;
@@ -188,19 +194,7 @@ html {
                 border-color var(--transition-smooth), 
                 background-color var(--transition-smooth);
     margin-bottom: 2rem;
-}
-
-.glass-card:hover {
-    border-color: var(--border-color-hover);
-    box-shadow: var(--card-shadow), var(--glow-shadow);
-}
-
-.stat-card {
-    border-radius: 16px;
-    padding: 1.5rem;
-    position: relative;
-    overflow: hidden;
-    height: 100%;
+        overflow: hidden;
 }
 
 .stat-card::before {
@@ -278,14 +272,8 @@ html {
     padding: 0.8rem 1rem;
     font-weight: 500;
     transition: border-color var(--transition-fast), background-color var(--transition-fast);
-}
-
-[data-theme="light"] .custom-input {
-    background: rgba(0, 0, 0, 0.03);
-}
-
-.custom-input:focus {
-    background: transparent;
+        max-width: 100%;
+        width: 100%;
     border-color: var(--accent-solid);
     outline: none;
     box-shadow: 0 0 0 3px rgba(var(--accent-solid-rgb), 0.2);
@@ -309,12 +297,12 @@ html {
     border-color: var(--text-primary);
 }
 
-/* Life Grid Section */
-.grid-container {
-    max-height: 800px;
-    overflow-y: auto;
-    padding: 1.5rem;
-    border-radius: 14px;
+    .accent-dot,
+    .theme-toggle-btn,
+    .help-toggle-btn {
+        min-width: 40px;
+        min-height: 40px;
+    }
     background: rgba(0, 0, 0, 0.15);
     border: 1px solid var(--border-color);
 }
@@ -364,22 +352,21 @@ html {
     border-color: var(--grid-future-border);
 }
 
-.grid-square.gray-out {
-    background-color: #27272a !important;
-    border-color: #3f3f46 !important;
-}
+    .grid-square.has-note {
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    }
 
-/* Animations */
-@keyframes pulsate-orange {
-    0%, 100% {
-        transform: scale(1);
-        opacity: 1;
+    .grid-square.has-note::after {
+        content: '';
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent-solid);
+        box-shadow: 0 0 8px rgba(var(--accent-solid-rgb), 0.5);
     }
-    50% {
-        transform: scale(1.2);
-        opacity: 0.8;
-    }
-}
 
 /* Custom CSS Tooltip */
 .grid-square::after {
@@ -497,10 +484,15 @@ html {
     font-weight: 600;
     color: var(--text-muted);
     white-space: nowrap;
+    max-width: 110px;
 }
 
 .timeline-node.active .timeline-label {
     color: var(--text-primary);
+}
+
+.timeline-node {
+    width: 100px;
 }
 
 /* Motivation Cards & Facts */
@@ -628,6 +620,38 @@ html {
     padding: 1.5rem;
 }
 
+.note-modal-content {
+    background: #ffffff;
+    border-radius: 24px;
+    border: 1px solid var(--border-color);
+}
+
+.note-modal-textarea {
+    min-height: 180px;
+    border-radius: 18px;
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    background: #ffffff;
+    color: var(--text-primary);
+    padding: 1rem;
+    resize: vertical;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.note-modal-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.note-modal-actions .btn {
+    min-width: 120px;
+}
+
+.note-modal-textarea:focus {
+    border-color: var(--accent-solid);
+    box-shadow: 0 0 0 4px rgba(var(--accent-solid-rgb), 0.12);
+}
+
 /* Scroll Animation Elements */
 .scroll-reveal {
     opacity: 0;
@@ -705,19 +729,118 @@ html {
 /* Responsive Rules for Small Devices */
 @media (max-width: 991.98px) {
     .life-grid {
-        grid-template-columns: repeat(26, 1fr); /* 26 columns on tablets/mobiles for spacing */
+        grid-template-columns: repeat(20, 1fr);
     }
     
     .glass-card {
         padding: 1.5rem;
     }
+
+    .navbar-custom .container {
+        flex-wrap: wrap;
+    }
+
+    .navbar-custom .d-flex.align-items-center {
+        width: 100%;
+        justify-content: center;
+        margin-top: 0.75rem;
+    }
+
+    .hero-picker-section {
+        padding: 0 1rem;
+    }
+
+    .grid-container {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .life-grid {
+        grid-template-columns: repeat(16, 1fr);
+    }
+
+    .grid-container {
+        max-height: 650px;
+    }
+
+    .timeline-container {
+        padding: 1rem 0;
+    }
 }
 
 @media (max-width: 575.98px) {
     .life-grid {
-        grid-template-columns: repeat(13, 1fr); /* 13 columns (quarter level) on small phones */
+        grid-template-columns: repeat(12, 1fr);
         gap: 3px;
     }
+
+    .glass-card {
+        padding: 1.25rem;
+        border-radius: 18px;
+    }
+
+    .navbar-custom {
+        padding: 0.75rem 0;
+    }
+
+    .navbar-custom .container {
+        padding: 0 0.75rem;
+    }
+
+    .navbar-custom .brand-title {
+        font-size: 1.15rem;
+    }
+
+    .navbar-custom .btn-outline-custom {
+        padding: 0.55rem 0.9rem;
+    }
+
+    .hero-picker-section {
+        padding: 0 0.75rem;
+    }
+
+    .glass-card.text-center {
+        text-align: left;
+    }
+
+    .form-label {
+        text-align: left;
+    }
+
+    .custom-input {
+        font-size: 0.95rem;
+    }
+
+    .btn-premium {
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+    }
+
+    .grid-labels-years {
+        display: none;
+    }
+
+    .timeline-container {
+        padding: 1rem 0.75rem;
+    }
+
+    .timeline-node {
+        width: 80px;
+    }
+
+    .timeline-dot {
+        width: 12px;
+        height: 12px;
+    }
+
+    .timeline-label {
+        font-size: 0.7rem;
+        white-space: normal;
+        text-align: center;
+        word-wrap: break-word;
+    }
+}
 
     .stat-value {
         font-size: 2rem;

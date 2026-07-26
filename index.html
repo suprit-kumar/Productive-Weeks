@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" data-accent="blue-purple">
+<html lang="en" data-theme="light" data-accent="blue-purple">
 
 <head>
     <meta charset="UTF-8">
@@ -69,12 +69,6 @@
                         aria-label="Select Cyber Cyan accent color"></div>
                 </div>
 
-                <!-- Theme Toggle Button -->
-                <button class="btn btn-outline-custom p-2 d-flex align-items-center justify-content-center"
-                    id="theme-toggle" title="Toggle Light/Dark Theme (T Key)" aria-label="Toggle display theme">
-                    <i class="bi bi-moon-stars-fill" id="theme-icon"></i>
-                </button>
-
                 <!-- Help Button -->
                 <button class="btn btn-outline-custom p-2 d-flex align-items-center justify-content-center"
                     id="help-toggle" title="Keyboard Shortcuts (? Key)" aria-label="View shortcuts guide">
@@ -123,6 +117,45 @@
             </div>
         </section>
 
+
+        <!-- Dynamic Facts Section -->
+        <section id="facts-section" class="row justify-content-center d-none mb-5 scroll-reveal">
+            <div class="col-lg-10">
+                <div class="row g-4">
+                    <!-- Productivity Loss Facts -->
+                    <div class="col-md-6">
+                        <div class="glass-card h-100">
+                            <h4 class="display-font mb-4"><i class="bi bi-clock-history me-2 text-danger"></i>The Cost
+                                of Wasting Time</h4>
+                            <div id="facts-list">
+                                <!-- Populated dynamically by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Context Fact -->
+                    <div class="col-md-6">
+                        <div class="glass-card h-100 d-flex flex-column justify-content-between">
+                            <div>
+                                <h4 class="display-font mb-3"><i class="bi bi-compass me-2 text-info"></i>Perspective &
+                                    Reality</h4>
+                                <p class="text-muted leading-relaxed" id="dynamic-context-fact">
+                                    Please enter your DOB to generate contextual facts based on your remaining
+                                    productive weeks.
+                                </p>
+                            </div>
+                            <!-- Action button to download visual report or print -->
+                            <div class="d-flex gap-2 flex-wrap mt-3">
+                                <button class="btn btn-premium flex-grow-1" id="share-progress-btn">
+                                    <i class="bi bi-share-fill me-2"></i> Share Progress
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Statistics Grid - Loaded dynamically or hidden if no DOB -->
         <section id="stats-section" class="row g-4 mb-5 d-none scroll-reveal">
             <div class="col-sm-6 col-lg-3">
@@ -151,6 +184,16 @@
             </div>
         </section>
 
+        <!-- Calculation Breakdown -->
+        <section id="calculation-section" class="row justify-content-center d-none mb-5 scroll-reveal">
+            <div class="col-lg-10">
+                <div class="glass-card">
+                    <h4 class="display-font mb-3">How the Calculation Works</h4>
+                    <div id="calculation-details" class="calculation-details text-muted small"></div>
+                </div>
+            </div>
+        </section>
+
         <!-- Visual Progress Bar -->
         <section id="progress-section" class="row justify-content-center d-none mb-5 scroll-reveal">
             <div class="col-lg-10">
@@ -174,7 +217,7 @@
                         <div>
                             <h3 class="display-font m-0">The 40-Year Productive Grid</h3>
                             <p class="text-muted small m-0 mt-1">Hover over any block to see the specific week and
-                                corresponding year of your life.</p>
+                                corresponding year of your productive span (Ages 20-40).</p>
                         </div>
                         <!-- Legend -->
                         <div
@@ -221,76 +264,32 @@
         <section id="timeline-section" class="row justify-content-center d-none mb-5 scroll-reveal">
             <div class="col-lg-10">
                 <div class="glass-card">
-                    <h4 class="display-font mb-4">Your Lifespan Milestones</h4>
+                    <h4 class="display-font mb-4">Your Productive Milestones</h4>
 
                     <div class="timeline-container my-4 px-4">
                         <div class="timeline-line"></div>
 
                         <div class="timeline-node active" style="left: 0%;">
-                            <div class="timeline-dot" data-bs-toggle="tooltip" title="Your birth day"></div>
-                            <div class="timeline-label">Born</div>
+                            <div class="timeline-dot" data-bs-toggle="tooltip" title="Productive window begins"></div>
+                            <div class="timeline-label">Age 20</div>
                         </div>
 
-                        <div class="timeline-node today" id="timeline-node-today" style="left: 30%;">
+                        <div class="timeline-node today" id="timeline-node-today" style="left: 0%;">
                             <div class="timeline-dot" data-bs-toggle="tooltip" title="Current Week"></div>
                             <div class="timeline-label">Today (<span id="timeline-age-val">0</span>y)</div>
                         </div>
 
-                        <div class="timeline-node" id="timeline-node-prod" style="left: 53.3%;">
+                        <div class="timeline-node" id="timeline-node-prod" style="left: 100%;">
                             <div class="timeline-dot" data-bs-toggle="tooltip" title="Limit of high-productivity years">
                             </div>
                             <div class="timeline-label">Age 40 (Prod. End)</div>
                         </div>
-
-                        <div class="timeline-node" style="left: 100%;">
-                            <div class="timeline-dot" data-bs-toggle="tooltip" title="Lifespan expectancy limits"></div>
-                            <div class="timeline-label">Age 75 (Expectancy)</div>
-                        </div>
                     </div>
+                    <p class="text-muted small mt-3">This timeline highlights the focused productive age window from 20 to 40 years old. Life expectancy extends beyond this span.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Dynamic Facts Section -->
-        <section id="facts-section" class="row justify-content-center d-none mb-5 scroll-reveal">
-            <div class="col-lg-10">
-                <div class="row g-4">
-                    <!-- Productivity Loss Facts -->
-                    <div class="col-md-6">
-                        <div class="glass-card h-100">
-                            <h4 class="display-font mb-4"><i class="bi bi-clock-history me-2 text-danger"></i>The Cost
-                                of Wasting Time</h4>
-                            <div id="facts-list">
-                                <!-- Populated dynamically by JS -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Dynamic Context Fact -->
-                    <div class="col-md-6">
-                        <div class="glass-card h-100 d-flex flex-column justify-content-between">
-                            <div>
-                                <h4 class="display-font mb-3"><i class="bi bi-compass me-2 text-info"></i>Perspective &
-                                    Reality</h4>
-                                <p class="text-muted leading-relaxed" id="dynamic-context-fact">
-                                    Please enter your DOB to generate contextual facts based on your remaining
-                                    productive weeks.
-                                </p>
-                            </div>
-                            <!-- Action button to download visual report or print -->
-                            <div class="d-flex gap-2 flex-wrap mt-3">
-                                <button class="btn btn-outline-custom" id="print-report-btn">
-                                    <i class="bi bi-printer me-2"></i> Print Grid
-                                </button>
-                                <button class="btn btn-premium flex-grow-1" id="share-progress-btn">
-                                    <i class="bi bi-share-fill me-2"></i> Share Progress
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <!-- Motivational Quotes Section -->
         <section class="row justify-content-center scroll-reveal mb-5">
@@ -324,11 +323,11 @@
                             </p>
                         </div>
                         <div class="col-md-4">
-                            <h5 class="display-font text-primary"><i class="bi bi-shield-check me-2"></i>Why 40
+                            <h5 class="display-font text-primary"><i class="bi bi-shield-check me-2"></i>Why 20-40 are the most
                                 productive years?</h5>
                             <p class="text-muted small">
                                 The highly creative, energetic, and risk-taking years of career execution typically fall
-                                between ages 20 and 60. This 40-year window represents your peak capital-building phase.
+                                between ages 20 and 40. This 20-year window represents your peak capital-building phase.
                             </p>
                         </div>
                         <div class="col-md-4">
@@ -348,16 +347,13 @@
 
     <!-- Footer Section -->
     <footer
-        class="mt-auto py-4 border-top border-secondary border-opacity-10 text-center text-muted small bg-black bg-opacity-20">
+        class="mt-auto py-4 border-top border-secondary border-opacity-10 text-center small bg-black bg-opacity-20">
         <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
             <div>
                 <span>Made with <i class="bi bi-heart-fill text-danger mx-1"></i> &bull; Every Week Counts</span>
             </div>
             <div class="d-flex gap-3">
                 <a href="#dob-form" class="text-muted text-decoration-none hover-accent">Recalculate</a>
-                <span>&middot;</span>
-                <a href="#" class="text-muted text-decoration-none hover-accent" data-bs-toggle="modal"
-                    data-bs-target="#shortcutsModal">Keyboard Shortcuts</a>
             </div>
         </div>
     </footer>
@@ -370,44 +366,29 @@
         </button>
     </div>
 
-    <!-- Shortcuts Helper Modal -->
-    <div class="modal fade" id="shortcutsModal" tabindex="-1" aria-labelledby="shortcutsModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content modal-content-custom">
+    <!-- Week Note Modal -->
+    <div class="modal fade" id="weekNoteModal" tabindex="-1" aria-labelledby="weekNoteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content modal-content-custom note-modal-content">
                 <div class="modal-header modal-header-custom">
-                    <h5 class="modal-title display-font d-flex align-items-center" id="shortcutsModalLabel">
-                        <i class="bi bi-keyboard me-2"></i> Keyboard Shortcuts
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <div>
+                        <h5 class="modal-title display-font" id="weekNoteModalLabel">Week Note</h5>
+                        <p class="small text-muted mb-1" id="note-modal-subtitle">Add or edit notes for the selected productive week.</p>
+                        <p class="small text-muted mb-0" id="note-modal-date">Week dates will appear here once you select a week.</p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4">
-                    <div class="d-flex flex-column gap-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="text-muted">Focus Date of Birth input</span>
-                            <span class="kbd-key">D</span>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="text-muted">Toggle Display Theme (Dark/Light)</span>
-                            <span class="kbd-key">T</span>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="text-muted">Generate another motivational quote</span>
-                            <span class="kbd-key">Q</span>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="text-muted">Trigger PDF / Print Page Dialog</span>
-                            <span class="kbd-key">P</span>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="text-muted">Open / Close Help Guide</span>
-                            <span class="kbd-key">?</span>
-                        </div>
+                    <div class="mb-3">
+                        <textarea id="note-content" class="form-control note-modal-textarea" placeholder="Write your note here..." aria-label="Week note editor"></textarea>
+                    </div>
+                    <div class="text-muted small">
+                        Notes are saved locally to your browser and appear when you click a week again.
                     </div>
                 </div>
-                <div class="modal-footer modal-footer-custom justify-content-between">
-                    <span class="small text-muted">Press <kbd class="kbd-key">ESC</kbd> to exit menus</span>
-                    <button type="button" class="btn btn-outline-custom btn-sm" data-bs-dismiss="modal">Got it</button>
+                <div class="modal-footer modal-footer-custom note-modal-actions">
+                    <button type="button" class="btn btn-outline-custom" id="note-delete-btn">Delete Note</button>
+                    <button type="button" class="btn btn-premium" id="note-save-btn">Save Note</button>
                 </div>
             </div>
         </div>
